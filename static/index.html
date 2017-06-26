@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="content-type" content="text/html" charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1;">
+  <meta name="HandheldFriendly" content="true">
+  <title>can</title>
+
+  <link rel="stylesheet" href="/style/style.css">
+  <link rel="stylesheet" href="/style/min.css">
+  <style id="fill_style">
+    * {
+      cursor: progress !important;
+    }
+    [fill-label] {
+      background: #e0e0e0 !important;
+      color: transparent !important;
+      border-color: #e0e0e0 !important;
+    }
+    .avator img {
+      opacity: 0 !important
+    }
+    hr {
+      opacity: 0 !important;
+    }
+  </style>
+  <script>
+    window.addEventListener('load', function (e) {
+      var fill_style = document.getElementById('fill_style')
+      fill_style.parentNode.removeChild(fill_style)
+      $('#input .textarea textarea.comment').attr('placeholder', '你想说什么？')
+    })
+  </script>
+</head>
+<body>
+  <main>
+    <form id="input">
+      <div class="textarea">
+        <textarea class="fill" name="fill"></textarea>
+        <textarea class="comment" name="comment" placeholder="waitting..."></textarea>
+      </div>
+      <button class="send" fill-label>→</button>
+    </form>
+    <div id="about">
+      <div class="logo">
+        <div class="avator">
+          <a href="http://qun.torzo.club" target="_blank"><img src="resource/torzo.jpg" /></a>
+        </div>
+        <div class="summary">
+          <div fill-label class="above">装于学，学于装</div>
+          <hr>
+          <div fill-label class="bottom">在这里，你可以畅所欲言</div>
+        </div>
+      </div>
+      <ol class="policy">
+        <li><span fill-label>不得发送违反《中华人民共和国宪法》规定的言论</span></li>
+        <li><span fill-label>你所写下的文字，将在三天后清除</span></li>
+        <li><span fill-label>扛得住压力，顶得住真相</span></li>
+      </ol>
+    </div>
+    <ul id="comment">
+    </ul>
+  </main>
+  <script src="plugins/event.js"></script>
+  <script src="plugins/zepto.min.js"></script>
+  <script src="plugins/han.min.js"></script>
+  <script src="script/frame.js"></script>
+</body>
+</html>
