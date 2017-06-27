@@ -18,6 +18,10 @@
       color: transparent !important;
       border-color: #e0e0e0 !important;
     }
+    [fill-transparent-label] {
+      background: transparent !important;
+      color: transparent !important;
+    }
     .avator img {
       opacity: 0 !important
     }
@@ -34,13 +38,13 @@
   </script>
 </head>
 <body>
-  <main>
+  <div id="main">
     <form id="input">
       <div class="textarea">
         <textarea class="fill" name="fill"></textarea>
         <textarea class="comment" name="comment" placeholder="waitting..."></textarea>
       </div>
-      <button class="send" fill-label>→</button>
+      <button class="send" fill-transparent-label>发送</button>
     </form>
     <div id="about">
       <div class="logo">
@@ -61,7 +65,7 @@
     </div>
     <ul id="comment">
     </ul>
-  </main>
+  </div>
   <script src="plugins/event.js"></script>
   <script src="plugins/zepto.min.js"></script>
   <script src="plugins/han.min.js"></script>

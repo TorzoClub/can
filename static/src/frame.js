@@ -1,3 +1,26 @@
+(function () {
+  const bPrototype = {
+		BrowserCore: ['ms', 'moz', 'Moz', 'webkit'],
+		dom: document.createElement('div'),
+		prop: 'Transition',
+		init() {
+			const result = this.BrowserCore.some(prefix => {
+				if (`${prefix}${this.prop}` in this.dom.style)
+					return this.core = prefix.toLowerCase()
+			})
+
+			if (!result) {
+				console.warn('unsupport browser rendering core')
+				this.core = 'unknown'
+			}
+
+			return this.core
+		},
+	}
+	window.vec_browser = Object.create(bPrototype)
+	window.vec_browser.init()
+})();
+
 function fillString(str, fill_char = '0', fill_length = str.length) {
   if (typeof(str) !== 'string') {
     str = String(str)
@@ -22,7 +45,7 @@ function isAppleMobileDevice() {
   return /(iPod|iPhone|iPad)/g.test(navigator.userAgent)
 }
 if (isAppleMobileDevice()) {
-  $('main').addClass('apple-mobile-device')
+  $('#main').addClass('apple-mobile-device')
 }
 
 function fillTextArea(container) {
@@ -157,7 +180,14 @@ const scroll_handle = e => {
   if (scrollFetchLock) {
     return
   } else {
-    const {scrollTop, offsetHeight, scrollHeight} = document.body
+    let scrollElement
+    if (vec_browser.core === 'ms') {
+      scrollElement = $('html')[0]
+    } else {
+      scrollElement = document.body
+    }
+
+    const {scrollTop, offsetHeight, scrollHeight} = scrollElement
     if ((scrollTop + offsetHeight) > scrollHeight - 200) {
       scrollFetchLock = true
       list.once('fetch-comment', () => {

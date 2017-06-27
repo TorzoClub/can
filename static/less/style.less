@@ -3,20 +3,21 @@
 [fill-label] {
   transition: color 618ms, background 618ms, border-color 618ms;
 }
-
+[fill-transparent-label] {
+  transition: color 618ms, background 618ms;
+}
 html, body {
-  height: 100%;
   width: 100%;
+  height: 100%;
   padding: 0;
   margin: 0;
 }
-
-body > main {
+body > #main {
   width: 800px;
   margin: auto;
 }
 body {
-  overflow-y: scroll;
+  min-height: 101%;
 }
 
 #input {
@@ -24,10 +25,13 @@ body {
   max-width: 100%;
   box-sizing: border-box;
 
-  border: 1px solid hsl(201, 20%, 70%);
+  border: 1px solid @input-frame-border-color;
   transition: border-color 382ms;
   &:focus {
-    border-color: hsl(201, 30%, 50%)
+    border-color: @input-frame-border-color-focus;
+    .send {
+      border-color: @input-frame-border-color-focus;
+    }
   }
   border-top: 0;
   transition: height 618ms;
@@ -56,7 +60,7 @@ body {
       // word-break: break-word;
       // white-space: normal;
       line-height: 1.5em;
-      font-family: "Noto Sans CJK SC", "Source Han Sans", "Source Han Sans CN", courier, "Microsoft JhengHei", DengXian, "微软雅黑", "黑体";
+      font-family: @font-family;
       font-size: 1.25em;
       color: hsla(240, 9%, 25%, 0.8);
       background: transparent;
@@ -112,17 +116,24 @@ body {
   }
 
   .send {
+    outline: none;
     position: absolute;
-    bottom: .25em;
+    box-sizing: border-box;
+    bottom: 0;
     right: 1.5em;
     font-size: 1em;
     color: hsl(201, 47%, 35%);
-    border: 1px solid hsl(201, 47%, 35%);
-    border-radius: 6px;
+    // border: 0;
+    border: 1px solid @input-frame-border-color;
+    height: 1.75em;
+    border-bottom: 0;
+    border-radius: 3px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
     padding: 0 .4em;
     cursor: pointer;
     background: white;
-    transition: background 382ms, border-color 382ms;
+    transition: background 382ms, border-color 382ms, color 618ms;
     &:hover {
       border-color: hsla(201, 47%, 35%, .382);
       background: hsla(201, 47%, 35%, .182);
@@ -142,6 +153,8 @@ body {
   flex-wrap: wrap;
 
   min-height: 120px;
+
+  font-family: @font-family;
 
   .logo {
     display: -webkit-flex;
@@ -172,19 +185,20 @@ body {
     .summary {
       width: ~"calc(320px - 74px - .5em)";
       .above, .bottom {
-        color: hsl(0, 0%, 30%);
+        color: hsl(201, 0%, 30%);
       }
       .above {
         font-size: 1.75em;
       }
       .bottom {
+        // color: hsl(201, 20%, 30%);
         font-size: 1em;
       }
       hr {
         opacity: 1;
         border: 0;
         height: 1px;
-        background: #AAA;
+        background: @torzo-blue-half;
         margin: 5px 0;
         transition: opacity 618ms;
       }
