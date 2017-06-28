@@ -67,7 +67,7 @@ body {
     }
     .fill {
       visibility: hidden;
-      position: fixed;
+      position: absolute;
       top: 100%;
       left: 0;
       height: 0px;
@@ -222,6 +222,7 @@ h-char {
   color: #999999;
 }
 #comment {
+  position: relative;
   padding: 0;
   list-style: none;
 
@@ -252,7 +253,9 @@ h-char {
     margin-bottom: 0;
   }
   li.comment-item {
+    padding-top: 0px;
     margin: 0 1em 2em 1em;
+    transition: padding-top 618ms;
     article {
       font-family: "Noto Sans CJK SC", "Source Han Sans", "Source Han Sans CN", "Helvetica Neue", Helvetica, "Han Heiti", "微软雅黑", "黑体", sans-serif;
       color: #3a3a45;

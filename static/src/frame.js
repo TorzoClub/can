@@ -67,9 +67,61 @@ function fillTextArea(container) {
 
 fillTextArea(document.querySelector('.textarea'))
 
+function resetTextArea(container, done) {
+  $(container).css('transition', 'height 618ms, opacity 618ms')
+  setTimeout(() => {
+    $(container).css({ 'height': '', opacity: '0' })
+  }, 0)
+
+  setTimeout(() => {
+    $(container).val('')
+    $(container).css({
+      'transition': '',
+      'opacity': '',
+    })
+    setTimeout(() => done && done(), 0)
+  }, 620)
+}
+
 $('.send').click(e => {
   const error_handle = err => {
     alert(err.message)
+  }
+  const success_handle = result => {
+    const newComment = createCommentElement(result)
+    const $item = $('#comment > .comment-item')
+    $(newComment).css({
+      position: 'absolute',
+      top: 0,
+      left: 0,
+    })
+
+    $('#comment').prepend(newComment)
+
+    if ($item.length) {
+      const $newComment = $(newComment)
+      const cHeight = $newComment.height()
+      const cMarginBottom = parseFloat($newComment.css('margin-bottom'))
+      const totalHeight = cMarginBottom + cHeight
+      console.warn(cMarginBottom, cHeight)
+
+      $item.first().css('padding-top', totalHeight)
+    }
+
+    setTimeout(() => {
+      if ($item.length) {
+        $item.first().css('transition-duration', '0s').css('padding-top', '')
+      }
+      $(newComment).css({
+        position: '',
+        top: '',
+        left: '',
+      })
+
+      setTimeout(() => {
+        $item.first().css('transition-duration', '')
+      }, 16)
+    }, 650)
   }
   $.ajax({
     type: 'POST',
@@ -82,7 +134,10 @@ $('.send').click(e => {
       if (obj.code) {
         error_handle(obj)
       } else {
-        console.warn(obj)
+        resetTextArea(
+          $('.textarea .comment'),
+          () => success_handle(obj.result)
+        )
       }
     },
     error: error_handle,
