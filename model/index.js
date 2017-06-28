@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const autoIncrement = require('mongoose-auto-increment')
 
 const EventEmitter = require('events')
 const cfg = require('../config')
@@ -21,7 +20,6 @@ model.connectionStatus = new Promise(resolve => {
 			resolve()
 		}
 	})
-	autoIncrement.initialize(mongoose.connection)
 })
 
 Object.assign(model, {
