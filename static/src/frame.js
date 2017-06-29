@@ -24,29 +24,32 @@
   const captcha = {
     container: $('.captcha-frame')[0],
     init() {
-      this.input = $('input', this.container)[0]
-      this.img = $('img', this.container)[0]
+      const $input = $('input', this.container)
+      const $img = $('img', this.container)
+      this.input = $input[0]
+      this.img = $img[0]
+
       $(this.img).click(e => {
-        $(this.input).removeClass('focus').focus()
+        $input.removeClass('focus').focus()
         this.refreshImg(() => {
-          $(this.input).addClass('focus').focus()
+          $input.addClass('focus').focus()
         })
       })
-      $(this.input).on('click', e => {
+      $input.on('click', e => {
         if (this.img.loading) {
           e.preventDefault()
-          $(this.input).blur()
+          $input.blur()
         } else if (!this.img.src.length) {
           this.refreshImg(() => {
-            $(this.input).addClass('focus')
+            $input.addClass('focus')
           })
         } else {
-          $(this.input).addClass('focus')
+          $input.addClass('focus')
         }
         return false
       })
-      $(this.input).blur(e => {
-        $(this.input).removeClass('focus')
+      $input.blur(e => {
+        $input.removeClass('focus')
       })
     },
     removeCaptcha() {
@@ -190,9 +193,16 @@ $('.send').click(e => {
       if (obj.code) {
         error_handle(obj)
       } else {
+        $(captcha.input).blur()
+        captcha.img.src = ''
+        captcha.removeCaptcha()
+
         resetTextArea(
           $('.textarea .comment'),
-          () => success_handle(obj.result)
+          () => {
+            success_handle(obj.result)
+            captcha.refreshImg()
+          }
         )
       }
     },
