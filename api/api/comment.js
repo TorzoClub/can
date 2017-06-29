@@ -60,20 +60,4 @@ router.get('/status', async (ctx, next) => {
   await next()
 })
 
-
-router.post('/comment', async (ctx, next) => {
-  let cont = ctx.request.body
-  let apiBack = ctx.apiBack
-
-  const cont_model = new ContentModel(cont)
-  try {
-    apiBack.result = await cont_model.save()
-  } catch (e) {
-    apiBack.message = e.message
-    apiBack.code = -1
-  }
-
-  await next()
-})
-
 module.exports = router

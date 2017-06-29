@@ -14,6 +14,8 @@ router.use(async (ctx, next) => {
 
 const routers = [
   './comment',
+  './captcha',
+  './comment-post',
 ]
 for (let module_path of routers) {
   const mrouter = require(module_path)
