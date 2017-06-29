@@ -1,7 +1,7 @@
 const cfg = require('../../config')
 const Model = require('../../model')
 const pkg = require('../../package')
-const ContentModel = Model.Content
+const CommentModel = Model.Comment
 
 const Router = require('koa-router')
 
@@ -21,7 +21,7 @@ router.get('/comment/:page', async (ctx, next) => {
       date = new Date
     }
 
-    const list = await ContentModel
+    const list = await CommentModel
       .find({ is_hide: false, date: { $lte: date }})
       .sort({date: -1})
       .skip(start)
@@ -42,7 +42,7 @@ router.get('/status', async (ctx, next) => {
   const back = ctx.apiBack
 
   try {
-    const count = await ContentModel.count()
+    const count = await CommentModel.count()
 
     back.result = {
       count,

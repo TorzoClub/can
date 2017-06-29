@@ -1,7 +1,7 @@
 const cfg = require('../../config')
 const Model = require('../../model')
 const pkg = require('../../package')
-const ContentModel = Model.Content
+const CommentModel = Model.Comment
 
 const Router = require('koa-router')
 
@@ -15,7 +15,7 @@ router.post('/comment', async (ctx, next) => {
     apiBack.message = '验证码不正确'
     apiBack.code = 1
   } else {
-    const cont_model = new ContentModel(cont)
+    const cont_model = new CommentModel(cont)
     try {
       apiBack.result = await cont_model.save()
     } catch (e) {
