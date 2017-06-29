@@ -71,5 +71,17 @@ CommentSchema.pre('save', mhook(async function () {
 //   this.comment_format = entities.encode(this.comment)
 // }))
 
+// 发送时间超过三天（72 小时）的则隐藏
+setInterval(async () => {
+  const date = new Date
+  date.setDate(date.getDate() - 3)
+  await CommentModel.update({
+    is_hide: false,
+    date: { $lte: date },
+  }, {
+    is_hide: true
+  }, { multi: true })
+}, 1000 * 60)
+
 const CommentModel = mongoose.model('Comment', CommentSchema)
 module.exports = CommentModel
