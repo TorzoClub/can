@@ -23,6 +23,6 @@ model.connectionStatus = new Promise(resolve => {
 })
 
 Object.assign(model, {
-	Content: require('./content') && mongoose.model('Content'),
+	Comment: require('./comment') && mongoose.model('Comment'),
 	mongoose,
 })
