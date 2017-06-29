@@ -1,24 +1,76 @@
 (function () {
   const bPrototype = {
-		BrowserCore: ['ms', 'moz', 'Moz', 'webkit'],
-		dom: document.createElement('div'),
-		prop: 'Transition',
-		init() {
-			const result = this.BrowserCore.some(prefix => {
-				if (`${prefix}${this.prop}` in this.dom.style)
-					return this.core = prefix.toLowerCase()
-			})
+    BrowserCore: ['ms', 'moz', 'Moz', 'webkit'],
+    dom: document.createElement('div'),
+    prop: 'Transition',
+    init() {
+      const result = this.BrowserCore.some(prefix => {
+        if (`${prefix}${this.prop}` in this.dom.style)
+        return this.core = prefix.toLowerCase()
+      })
 
-			if (!result) {
-				console.warn('unsupport browser rendering core')
-				this.core = 'unknown'
-			}
+      if (!result) {
+        console.warn('unsupport browser rendering core')
+        this.core = 'unknown'
+      }
 
-			return this.core
-		},
-	}
-	window.vec_browser = Object.create(bPrototype)
-	window.vec_browser.init()
+      return this.core
+    },
+  }
+  window.vec_browser = Object.create(bPrototype)
+  window.vec_browser.init()
+})();
+(function () {
+  const captcha = {
+    container: $('.captcha-frame')[0],
+    init() {
+      this.input = $('input', this.container)[0]
+      this.img = $('img', this.container)[0]
+      $(this.img).click(e => {
+        $(this.input).removeClass('focus').focus()
+        this.refreshImg(() => {
+          $(this.input).addClass('focus').focus()
+        })
+      })
+      $(this.input).on('click', e => {
+        if (this.img.loading) {
+          e.preventDefault()
+          $(this.input).blur()
+        } else if (!this.img.src.length) {
+          this.refreshImg(() => {
+            $(this.input).addClass('focus')
+          })
+        } else {
+          $(this.input).addClass('focus')
+        }
+        return false
+      })
+      $(this.input).blur(e => {
+        $(this.input).removeClass('focus')
+      })
+    },
+    removeCaptcha() {
+      return $(this.input).val('')
+    },
+    getCaptcha() {
+      return $(this.input).val().toUpperCase()
+    },
+    refreshImg(callback) {
+      const {img, input} = this
+      $(input).attr('placeholder', '读取中')
+      img.onload = function () {
+        img.loading = false
+        img.onload = null
+        $(input).attr('placeholder', '验证码')
+        callback && callback(img)
+      }
+      img.loading = true
+      img.src = `/api/captcha?d=${(new Date).valueOf()}`
+    },
+  }
+  captcha.init()
+  setTimeout(() => captcha.refreshImg(), 0)
+  window.captcha = captcha
 })();
 
 function fillString(str, fill_char = '0', fill_length = str.length) {
@@ -56,8 +108,11 @@ function fillTextArea(container) {
   textareaContainer.onchange = e => {
     console.warn('onchange')
   }
+  const $fillContainer = $(fillContainer)
+  const $textareaContainer = $(textareaContainer)
   const input_handle = e => {
     // let {value} = textareaContainer
+    $fillContainer.width($textareaContainer.width())
     fillContainer.value = textareaContainer.value
     textareaContainer.style.height = `${fillContainer.scrollHeight}px`
   }
@@ -128,6 +183,7 @@ $('.send').click(e => {
     url: '/api/comment',
     data: {
       comment: $('#input [name="comment"]').val(),
+      captcha: $('[name="captcha"]').val().toUpperCase()
     },
     dataType: 'json',
     success(obj) {
