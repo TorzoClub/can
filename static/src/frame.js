@@ -277,22 +277,30 @@ function createCommentElement(comment) {
 
 const list = new List
 
-list.on('fetch-comment', comments => {
-  comments.forEach((comment, cursor) => {
-    setTimeout(() => {
-      const commentItemContainer = createCommentElement(comment)
-      const $commentContainer = $('#comment')
-      $commentContainer.append(commentItemContainer)
-    }, cursor * 182)
+$(() => {
+  list.on('fetch-comment', comments => {
+    comments.forEach((comment, cursor) => {
+      setTimeout(() => {
+        const commentItemContainer = createCommentElement(comment)
+        const $commentContainer = $('#comment')
+        $commentContainer.append(commentItemContainer)
+
+        console.info(comments)
+        if (cursor === comments.length - 1) {
+          console.log('fetch-effect-done')
+          list.emit('fetch-effect-done', comments)
+        }
+      }, cursor * 182)
+    })
   })
-})
-list.once('init', e => {
-  list.fetch()
-})
-list.on('init-fail', err => {
-})
-list.on('fetch-fail', err => {
-  alert(err.message)
+  list.once('init', e => {
+    list.fetch()
+  })
+  list.on('init-fail', err => {
+  })
+  list.on('fetch-fail', err => {
+    alert(err.message)
+  })
 })
 
 
@@ -311,15 +319,20 @@ const scroll_handle = e => {
     const {scrollTop, offsetHeight, scrollHeight} = scrollElement
     if ((scrollTop + offsetHeight) > scrollHeight - 200) {
       scrollFetchLock = true
-      list.once('fetch-comment', () => {
-        scrollFetchLock = false
-        console.warn('!')
+      // list.emit('fetch-effect-done')
+      list.once('fetch-effect-done', comments => {
+        if (comments.length) {
+          console.warn('!')
+          scrollFetchLock = false
+        } else {
+          scrollFetchLock = true
+        }
       })
       list.fetch()
     }
   }
 }
-$(window).on('scroll', scroll_handle)
+$(window).scroll(scroll_handle)
 if (isAppleMobileDevice()) {
   $(window).on('touchmove', 'touchend',() => {
     $(window).off('scroll', scroll_handle)
