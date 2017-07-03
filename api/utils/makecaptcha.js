@@ -2,7 +2,7 @@ var z = require('zengming');
 var BMP24 = z.BMP24;
 var font = z.Font;
 
-function makeCaptcha() {
+function makeCaptcha(str) {
     var img = new BMP24(100, 40);
     img.fillRect(0, 0, img.w-1, img.h-1, 0xffffff);
     img.drawCircle(11, 11, 10, z.rand(0, 0xffffff));
@@ -27,12 +27,6 @@ function makeCaptcha() {
         }
     }
 
-    var p = "ABCDEFGHIJKLMNOPQRSTUVWXYZ3456789";
-    var str = '';
-    for(var i=0; i<5; i++){
-        str += p.charAt(Math.random() * p.length |0);
-    }
-
     var fonts = [font.font8x16, font.font12x24, font.font16x32];
     var x = 15, y=8;
     for(var i=0; i<str.length; i++){
@@ -41,10 +35,7 @@ function makeCaptcha() {
         img.drawChar(str[i], x, y, f, z.rand(0x111111, 0x333333));
         x += f.w + z.rand(2, 8);
     }
-    return {
-      img: img,
-      str: str,
-    }
+    return img
 }
 
 module.exports = makeCaptcha
