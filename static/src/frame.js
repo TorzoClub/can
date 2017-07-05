@@ -60,7 +60,7 @@
     },
     refreshImg(callback) {
       const {img, input} = this
-      $(input).attr('placeholder', '读取中')
+      $(input).attr('placeholder', '读取中').val('')
       img.onload = function () {
         img.loading = false
         img.onload = null
@@ -91,6 +91,7 @@ function fillString(str, fill_char = '0', fill_length = str.length) {
   return fill_str.join('')
 }
 
+// yyyy-mm-dd hh:mm:ss
 const toCommentDateString = d => {
   const f = v => fillString(v, '0', 2)
   return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()} ` +
@@ -143,6 +144,7 @@ function resetTextArea(container, done) {
 
 $('.send').click(e => {
   const error_handle = err => {
+    captcha.refreshImg()
     alert(err.message)
   }
   const success_handle = result => {
