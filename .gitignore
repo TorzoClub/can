@@ -1,6 +1,8 @@
 # Dependency directories
 node_modules
 
-# gulp dist directories
+# gulp dest directories
 static/script
 static/style
+static/admin/script
+static/admin/style
