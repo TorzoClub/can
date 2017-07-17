@@ -18,6 +18,7 @@ const increment = mongoose.model('Increment', incrementSchema)
 const CommentSchema = new Schema({
   is_hide: { type: Boolean, default: false },
   date: { type: Date, default: Date.now },
+  duration: { type: Number, default: 72 },
   content_type: { type: Number, default: 0 },
   comment: { type: String, default: '(空内容)' },
   comment_format: { type: String, defualt: '(空内容)' },
@@ -44,7 +45,7 @@ CommentSchema.pre('save', mhook(async function () {
 
 CommentSchema.pre('save', mhook(async function () {
   this.is_hide = false    // 只要创建了，那么它【必须】是 false
-  this.content_type = 0   //***** 强制锁为 0，以后再开发其他的格式
+  this.content_type = 0   // ***** 强制锁为 0，以后再开发其他的格式
   this.date = new Date    // 创建时间设为当前时间
 }))
 
@@ -71,13 +72,13 @@ CommentSchema.pre('save', mhook(async function () {
 //   this.comment_format = entities.encode(this.comment)
 // }))
 
-// 发送时间超过三天（72 小时）的则隐藏
+// 发送时间超过 72 小时的则隐藏
 setInterval(async () => {
-  const date = new Date
-  date.setDate(date.getDate() - 3)
+  const date_condition = new Date
+  date_condition.setHours(date_condition.getHours() - 72)
   await CommentModel.update({
     is_hide: false,
-    date: { $lte: date },
+    date: { $lte: date_condition },
   }, {
     is_hide: true
   }, { multi: true })
