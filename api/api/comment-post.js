@@ -25,7 +25,6 @@ router.post('/comment', async (ctx, next) => {
   }
 
   ctx.destoryCaptcha()
-  await next()
 })
 
 module.exports = router

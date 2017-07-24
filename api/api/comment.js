@@ -34,8 +34,6 @@ router.get('/comment/:page', async (ctx, next) => {
     back.code = -3
     back.message = e.message
   }
-
-  await next()
 })
 
 router.get('/status', async (ctx, next) => {
@@ -56,8 +54,6 @@ router.get('/status', async (ctx, next) => {
     back.code = -2
     back.message = e.message
   }
-
-  await next()
 })
 
 module.exports = router
