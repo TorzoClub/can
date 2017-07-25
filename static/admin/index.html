@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="content-type" content="text/html" charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1;">
+  <meta name="HandheldFriendly" content="true">
+
+  <title>can - admin</title>
+  <link rel="stylesheet" href="style/global.css">
+
+  <script type="application/javascript" src="/plugins/md5/md5.min.js"></script>
+  <script type="application/javascript" src="/plugins/zepto.min.js"></script>
+  <script type="application/javascript" src="/plugins/vue.js"></script>
+</head>
+<body>
+  <div id="main">
+    <form v-if="is_login === false" id="login" v-on:submit.prevent="submit">
+      <input v-if="denied_count >= 3" v-model="pass" type="text" v-bind:placeholder="is_loading ? '讀取中……' : '請輸入密碼'" />
+      <input v-else v-model="pass" type="password" v-bind:placeholder="is_loading ? '讀取中……' : '請輸入密碼'" />
+
+      <div class="login-message"> {{ login_message }} </div>
+      <button>login</button>
+    </form>
+    <nav v-if="is_login === true" id="nav">
+      <button v-on:click="logout">登出</button>
+    </nav>
+
+    <ul v-if="is_login === true" id="list">
+      <li v-for="comment in comments">
+        <article>{{ comment.comment }}</article>
+        <button>隱藏</button>
+        <button>刪除</button>
+      </li>
+    </ul>
+  </div>
+  <script type="application/javascript" src="/plugins/han.min.js"></script>
+  <script type="application/javascript" src="/plugins/event.js"></script>
+  <script type="application/javascript" src="script/frame.js"></script>
+</body>
+</html>
