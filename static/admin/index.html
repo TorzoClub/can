@@ -23,7 +23,9 @@
       <button>login</button>
     </form>
     <nav v-if="is_login === true" id="nav">
-      <button v-on:click="logout">登出</button>
+      <button class="logout" v-on:click="logout">
+        <embed src="resource/logout.svg" width="48" height="48" type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/" />
+      </button>
     </nav>
 
     <ul v-if="is_login === true" id="list">
